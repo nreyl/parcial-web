@@ -19,9 +19,11 @@ export function proxy(request: NextRequest) {
   )
  
   if (pathnameHasLocale) return
- 
+
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+
   // Redirect if there is no locale
-  const locale = getLocale(request)
+  const locale = cookieLocale && locales.includes(cookieLocale) ? cookieLocale : getLocale(request)
   request.nextUrl.pathname = `/${locale}${pathname}`
   // e.g. incoming request is /products
   // The new URL is now /en-US/products
